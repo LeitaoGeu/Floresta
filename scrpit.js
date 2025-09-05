@@ -1,119 +1,174 @@
-const storyEl = document.getElementById('story');
-const choice1Btn = document.getElementById('choice1');
-const choice2Btn = document.getElementById('choice2');
-
-// Estrutura simples da história
-const story = {
-    start: {
-        text: "Você está na floresta densa, ouvindo os sons da natureza ao seu redor. Dois caminhos aparecem à sua frente.",
-        choices: [
-            { text: "Seguir o caminho da esquerda", next: "leftPath" },
-            { text: "Seguir o caminho da direita", next: "rightPath" }
-        ]
+document.addEventListener("DOMContentLoaded", () => {
+  const story = [
+    {
+      question: "Você acorda entre os destroços do avião em chamas. A fumaça sobe e o calor aumenta rapidamente.",
+      choices: [
+        { text: "Correr para longe da fumaça e buscar ar puro", correct: true },
+        { text: "Tentar puxar malas presas sob as ferragens", correct: false, death: "As chamas se espalharam e você não conseguiu escapar a tempo." }
+      ]
     },
-    leftPath: {
-        text: "Você encontra um arbusto cheio de frutas brilhantes. Parece seguro para comer?",
-        choices: [
-            { text: "Comer as frutas", next: "eatFruits" },
-            { text: "Ignorar e continuar", next: "ignoreFruits" }
-        ]
+    {
+      question: "Você chega a uma clareira próxima. O silêncio é estranho, mas um farfalhar ecoa da mata.",
+      choices: [
+        { text: "Avançar em direção ao barulho sem hesitar", correct: false, death: "Um predador oculto saltou sobre você da mata fechada." },
+        { text: "Subir em uma pedra para ter visão do entorno", correct: true }
+      ]
     },
-    rightPath: {
-        text: "O caminho está coberto por cipós e trepadeiras. Você pode tentar escalar ou seguir por baixo.",
-        choices: [
-            { text: "Escalar os cipós", next: "climbVines" },
-            { text: "Passar por baixo dos cipós", next: "crawlUnder" }
-        ]
+    {
+      question: "Do alto da pedra, você avista um riacho brilhando à distância.",
+      choices: [
+        { text: "Seguir até o riacho pela trilha aberta", correct: true },
+        { text: "Ignorar o riacho e entrar pela mata densa", correct: false, death: "Você se perdeu sem orientação e a mata o engoliu." }
+      ]
     },
-    eatFruits: {
-        text: "As frutas são deliciosas, mas logo você sente sono... Você desmaia e acorda em casa, seguro.",
-        choices: [
-            { text: "Recomeçar aventura", next: "start" },
-            { text: "Terminar", next: "end" }
-        ]
+    {
+      question: "No riacho a água parece limpa, mas há peixes mortos boiando.",
+      choices: [
+        { text: "Beber diretamente sem pensar duas vezes", correct: false, death: "A água contaminada envenenou seu corpo em poucas horas." },
+        { text: "Improvisar um filtro com folhas antes de beber", correct: true }
+      ]
     },
-    ignoreFruits: {
-        text: "Você continua e encontra um rio cristalino, onde pode beber água e descansar.",
-        choices: [
-            { text: "Beber água e descansar", next: "rest" },
-            { text: "Seguir sem parar", next: "keepWalking" }
-        ]
+    {
+      question: "Enquanto descansa, você ouve vozes humanas distantes.",
+      choices: [
+        { text: "Ir atrás das vozes sem avaliar", correct: false, death: "Você deu de cara com uma tribo hostil que não perdoou sua imprudência." },
+        { text: "Seguir em direção ao som do mar", correct: true }
+      ]
     },
-    climbVines: {
-        text: "Você escala e descobre uma clareira linda com flores raras e pássaros coloridos.",
-        choices: [
-            { text: "Explorar a clareira", next: "exploreClearing" },
-            { text: "Voltar para o começo", next: "start" }
-        ]
+    {
+      question: "Na costa, restos do avião e madeira estão espalhados.",
+      choices: [
+        { text: "Construir uma jangada improvisada", correct: true },
+        { text: "Acender uma fogueira para atrair atenção", correct: false, death: "A fumaça atraiu caçadores perigosos que te capturaram." }
+      ]
     },
-    crawlUnder: {
-        text: "Ao passar por baixo, você encontra um ninho de pássaros e decide observar sem ser visto.",
-        choices: [
-            { text: "Continuar observando", next: "observeNest" },
-            { text: "Voltar para o começo", next: "start" }
-        ]
+    {
+      question: "Após dias no mar, um navio aparece ao longe.",
+      choices: [
+        { text: "Tentar nadar até o navio", correct: false, death: "As correntes o arrastaram antes de chegar perto." },
+        { text: "Agitar roupas e fazer fumaça improvisada", correct: true }
+      ]
     },
-    rest: {
-        text: "Você descansa e recupera as forças, pronto para novas aventuras.",
-        choices: [
-            { text: "Recomeçar aventura", next: "start" },
-            { text: "Terminar", next: "end" }
-        ]
-    },
-    keepWalking: {
-        text: "Sem descansar, você fica exausto e decide voltar para casa.",
-        choices: [
-            { text: "Recomeçar aventura", next: "start" },
-            { text: "Terminar", next: "end" }
-        ]
-    },
-    exploreClearing: {
-        text: "Você encontra uma antiga cabana abandonada. Dentro, há um mapa do tesouro!",
-        choices: [
-            { text: "Seguir o mapa", next: "followMap" },
-            { text: "Ignorar o mapa e voltar", next: "start" }
-        ]
-    },
-    observeNest: {
-        text: "Você observa os filhotes crescerem e aprende muito sobre a vida na floresta.",
-        choices: [
-            { text: "Recomeçar aventura", next: "start" },
-            { text: "Terminar", next: "end" }
-        ]
-    },
-    followMap: {
-        text: "Seguindo o mapa, você encontra um baú com tesouros da floresta. Parabéns!",
-        choices: [
-            { text: "Recomeçar aventura", next: "start" },
-            { text: "Terminar", next: "end" }
-        ]
-    },
-    end: {
-        text: "Obrigado por jogar a aventura na floresta! Até a próxima.",
-        choices: []
+    {
+      question: "Você foi resgatado. Após dias de tormento, seus pés tocam a civilização novamente.",
+      choices: []
     }
-};
+  ];
 
-// Função para atualizar a história na tela
-function updateStory(node) {
-    const current = story[node];
-    storyEl.textContent = current.text;
+  let currentStep = 0;
+  let timer = 30;
+  let timerInterval;
 
-    if (current.choices.length === 0) {
-        // Sem escolhas, esconder botões
-        choice1Btn.style.display = 'none';
-        choice2Btn.style.display = 'none';
-    } else {
-        choice1Btn.style.display = 'inline-block';
-        choice2Btn.style.display = 'inline-block';
+  const questionEl = document.getElementById("question");
+  const choicesEl = document.getElementById("choices");
+  const storyEl = document.getElementById("story");
+  const gameOverEl = document.getElementById("game-over");
+  const gameOverText = document.getElementById("game-over-text");
+  const restartBtn = document.getElementById("restart");
+  const timerEl = document.getElementById("timer");
 
-        choice1Btn.textContent = current.choices[0].text;
-        choice2Btn.textContent = current.choices[1].text;
+  const dieSound = new Audio("sounds/die.mp3");
+  const liveSound = new Audio("sounds/live.mp3");
+  const chronoSound = new Audio("sounds/cronometro.mp3");
+  const tickSound = new Audio("sounds/tick.mp3");
+  const dongSound = new Audio("sounds/dong.mp3"); // som final forte
 
-        choice1Btn.onclick = () => updateStory(current.choices[0].next);
-        choice2Btn.onclick = () => updateStory(current.choices[1].next);
+  tickSound.loop = true;
+
+  function loadStep(step) {
+    clearInterval(timerInterval);
+    stopTick();
+
+    timer = 30;
+    updateTimer();
+
+    if (step >= story.length - 1) {
+      questionEl.innerText = story[step].question;
+      choicesEl.innerHTML = "";
+      return;
     }
-}
 
-// Começa o jogo
-updateStory('start');
+    questionEl.innerText = story[step].question;
+    choicesEl.innerHTML = "";
+
+    story[step].choices.forEach(choice => {
+      const btn = document.createElement("button");
+      btn.className = "choice";
+      btn.innerText = choice.text;
+      btn.onclick = () => handleChoice(choice);
+      choicesEl.appendChild(btn);
+    });
+
+    startTimer();
+  }
+
+  function handleChoice(choice) {
+    clearInterval(timerInterval);
+    stopTick();
+
+    if (!choice.correct && choice.death) {
+      dieSound.play();
+      return gameOver(choice.death);
+    }
+
+    liveSound.play();
+    setTimeout(() => {
+      currentStep++;
+      loadStep(currentStep);
+    }, 600);
+  }
+
+  function startTimer() {
+    tickSound.volume = 0.3;
+    tickSound.play();
+
+    timerInterval = setInterval(() => {
+      timer--;
+      updateTimer();
+
+      if (timer === 10) {
+        tickSound.volume = 0.7;
+      }
+
+      if (timer === 5) {
+        timerEl.style.transform = "scale(1.3)";
+        chronoSound.play();
+      }
+
+      if (timer <= 0) {
+        clearInterval(timerInterval);
+        stopTick();
+        dieSound.play();
+        dongSound.play(); // toque final dramático
+        return gameOver("Enquanto você hesitava, canibais apareceram vindos da mata e te capturaram.");
+      }
+    }, 1000);
+  }
+
+  function stopTick() {
+    tickSound.pause();
+    tickSound.currentTime = 0;
+  }
+
+  function updateTimer() {
+    timerEl.innerText = timer;
+    if (timer > 5) {
+      timerEl.style.transform = "scale(1)";
+    }
+  }
+
+  function gameOver(text) {
+    storyEl.style.display = "none";
+    gameOverEl.style.display = "block";
+    gameOverText.innerText = text;
+  }
+
+  restartBtn.onclick = () => {
+    currentStep = 0;
+    storyEl.style.display = "block";
+    gameOverEl.style.display = "none";
+    loadStep(currentStep);
+  };
+
+  loadStep(currentStep);
+});
