@@ -1,0 +1,96 @@
+body {
+  margin: 0;
+  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#game {
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+}
+
+/* Fundo para perguntas e respostas */
+.card {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+
+#question {
+  margin-bottom: 20px;
+}
+
+#choices {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.choice {
+  background: #444;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #fff;
+}
+
+.choice:hover {
+  background: #666;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #fff3;
+}
+
+#game-over {
+  padding: 30px;
+}
+
+#restart {
+  background: #0077ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* Cronômetro fixo no canto */
+#timer {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #b30000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(255,0,0,0.8);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+/* Animação entrada */
+.slide-down {
+  animation: slideDown 0.5s ease forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
